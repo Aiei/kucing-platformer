@@ -7,6 +7,7 @@ public class Kucing : MonoBehaviour
     Animator anim;
 
     public float speed;
+    public float jump;
 
     void Start()
     {
@@ -17,18 +18,60 @@ public class Kucing : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey("a")){
-            sr.flipX = true;
-            rb.MovePosition(rb.position + Vector2.left * speed * Time.deltaTime);
-            anim.SetFloat("speed", 1.0f);
+        if (Input.GetKey(KeyCode.A))
+        {
+            Jalan(Vector2.left);
         }
-        else if (Input.GetKey("d")){
+        else if (Input.GetKey(KeyCode.D))
+        {
+            Jalan(Vector2.right);
+        } 
+        else
+        {
+            Diem();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Loncat();
+        }
+    }
+
+    void Diem()
+    {
+        anim.SetFloat("speed", 0);
+    }
+
+    void Jalan(Vector2 arah)
+    {
+        if (!GroundCheck())
+            return;
+
+        if (arah.x > 0)
             sr.flipX = false;
-            rb.MovePosition(rb.position + Vector2.right * speed * Time.deltaTime);
-            anim.SetFloat("speed", 1.0f);
+        else if (arah.x < 0)
+            sr.flipX = true;
+
+        rb.MovePosition(rb.position + arah * speed * Time.deltaTime);
+        anim.SetFloat("speed", 1.0f);
+    }
+
+    void Loncat()
+    {
+        if (!GroundCheck()) {
+            return;
         }
-        else {
-            anim.SetFloat("speed", 0);
+
+        rb.AddForce(transform.up * jump, ForceMode2D.Impulse);
+    }
+
+    bool GroundCheck()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 1f, 1<<7);
+        if (hit.collider != null) {
+            Debug.Log(hit.collider);
+            return true;
         }
+        return false;
     }
 }
