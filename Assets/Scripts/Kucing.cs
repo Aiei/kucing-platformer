@@ -1,77 +1,63 @@
 using UnityEngine;
 
-public class Kucing : MonoBehaviour
+namespace KucingGame
 {
-    Rigidbody2D rb;
-    SpriteRenderer sr;
-    Animator anim;
-
-    public float speed;
-    public float jump;
-
-    void Start()
+    public class Kucing : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-    }
+        public bool hasWeapon;
+        Animator animator;
+        public Bullet bulletPrefab;
+        public Transform firePosition;
+        Vector2 offset;
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.A))
+        void Start()
         {
-            Jalan(Vector2.left);
+            animator = GetComponent<Animator>();
+            offset = firePosition.position - transform.position;
         }
-        else if (Input.GetKey(KeyCode.D))
+
+        void Update()
         {
-            Jalan(Vector2.right);
-        } 
-        else
+            if (Input.GetKeyDown(KeyCode.Mouse0) && hasWeapon && !animator.GetBool("firing"))
+            {
+                Fire();
+            }
+        }
+
+        public void AddWeapon()
         {
-            Diem();
+            hasWeapon = true;
+            animator.SetBool("has weapon", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        public void RemoveWeapon()
         {
-            Loncat();
-        }
-    }
-
-    void Diem()
-    {
-        anim.SetFloat("speed", 0);
-    }
-
-    void Jalan(Vector2 arah)
-    {
-        if (!GroundCheck())
-            return;
-
-        if (arah.x > 0)
-            sr.flipX = false;
-        else if (arah.x < 0)
-            sr.flipX = true;
-
-        rb.MovePosition(rb.position + arah * speed * Time.deltaTime);
-        anim.SetFloat("speed", 1.0f);
-    }
-
-    void Loncat()
-    {
-        if (!GroundCheck()) {
-            return;
+            hasWeapon = false;
+            animator.SetBool("has weapon", false);
         }
 
-        rb.AddForce(transform.up * jump, ForceMode2D.Impulse);
-    }
+        public void Fire()
+        {
+            animator.SetBool("firing", true);
 
-    bool GroundCheck()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 1f, 1<<7);
-        if (hit.collider != null) {
-            Debug.Log(hit.collider);
-            return true;
+            Bullet b;
+            if (GetComponent<SpriteRenderer>().flipX == true)
+            {
+                b = Instantiate<Bullet>(bulletPrefab, transform.position + new Vector3(-offset.x, offset.y, 0), Quaternion.identity);
+                b.speed *= -1;
+                b.Flip();
+            }
+            else
+            {
+                b = Instantiate<Bullet>(bulletPrefab, transform.position + new Vector3(offset.x, offset.y, 0), Quaternion.identity);
+            }
+            
+            Invoke("StopFiring", 0.3f);
         }
-        return false;
+
+        public void StopFiring()
+        {
+            animator.SetBool("firing", false);
+        }
     }
 }

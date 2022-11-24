@@ -50,6 +50,22 @@ MonoBehaviour:
       m_SpriteOverride: {fileID: 1587971885, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
     m_FromMain: 0
     m_EntryOverrideCount: 3
+  - m_Name: Bullet
+    m_Hash: 1035941187
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Entry
+      m_Hash: 719368820
+      m_Sprite: {fileID: 935620188, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 935620188, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
+    - m_Name: Entry_0
+      m_Hash: 874506106
+      m_Sprite: {fileID: 1557721643, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1557721643, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 2
   m_PrimaryLibraryGUID: 
   m_ModificationHash: 0
   m_Version: 1
