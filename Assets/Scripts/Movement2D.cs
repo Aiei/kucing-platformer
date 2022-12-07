@@ -10,6 +10,7 @@ namespace KucingGame
         Rigidbody2D _body;
         SpriteRenderer _sprite;
         Animator _animator;
+        AudioSource _audio;
 
         /// <summary>
         /// Kecepatan berjalan
@@ -36,11 +37,18 @@ namespace KucingGame
         /// </summary>
         public bool allowAirMovement = false;
 
+        public AudioClip[] stepSound;
+
+        float lastStep = 0;
+        public float stepSpeed;
+        int lastStepId = 0;
+
         void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
             _sprite = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
+            _audio = GetComponent<AudioSource>();
         }
 
         void Update()
@@ -87,6 +95,16 @@ namespace KucingGame
                 return;
             // Bergerak dengan merubah velocity rigidbody
             _body.velocity = new Vector2(direction * speed, _body.velocity.y);
+
+            if (grounded && Mathf.Abs(direction) > 0.01f && Time.time - lastStep > stepSpeed)
+            {
+                _audio.PlayOneShot(stepSound[lastStepId]);
+                lastStep = Time.time;
+                lastStepId++;
+                if (lastStepId >= stepSound.Length) {
+                    lastStepId = 0;
+                }
+            }
         }
 
         /// <summary>

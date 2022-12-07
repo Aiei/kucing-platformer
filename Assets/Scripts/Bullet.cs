@@ -10,11 +10,15 @@ namespace KucingGame
 
         Rigidbody2D _body;
         SpriteRenderer _sprite;
+        AudioSource _audio;
 
         void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
             _sprite = GetComponent<SpriteRenderer>();
+            _audio = GetComponent<AudioSource>();
+            if (_audio != null)
+                _audio.Play();
         }
 
         void FixedUpdate()
