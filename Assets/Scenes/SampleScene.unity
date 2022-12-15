@@ -7330,6 +7330,8 @@ GameObject:
   - component: {fileID: 1908464573}
   - component: {fileID: 1908464574}
   - component: {fileID: 1908464575}
+  - component: {fileID: 1908464576}
+  - component: {fileID: 1908464577}
   m_Layer: 6
   m_Name: Kucing
   m_TagString: Untagged
@@ -7372,7 +7374,7 @@ MonoBehaviour:
   m_CategoryHash: 0
   m_labelHash: 0
   m_SpriteKey: 0
-  m_SpriteHash: 1041664084
+  m_SpriteHash: 804659037
 --- !u!114 &1908464566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7428,7 +7430,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1506990973, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
+  m_Sprite: {fileID: 1146666897, guid: 90185f73beef1ab47a44f1f67f0798b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7635,3 +7637,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1908464576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908464563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d311e63cbce534b825cc4f9f94fd70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 0
+--- !u!114 &1908464577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908464563}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea790f615daba65419264a0ba1ec75a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainCheckOffset: {x: 0.5, y: 0}
+  movement: {fileID: 0}

@@ -37,10 +37,24 @@ namespace KucingGame
         /// </summary>
         public bool allowAirMovement = false;
 
+        /// <summary>
+        /// Kumpulan suara steps
+        /// </summary>
         public AudioClip[] stepSound;
 
+        /// <summary>
+        /// Waktu terakhir step
+        /// </summary>
         float lastStep = 0;
+
+        /// <summary>
+        /// Jarak antara steps
+        /// </summary>
         public float stepSpeed;
+
+        /// <summary>
+        /// Index audio step yg terakhir kali dimainkan
+        /// </summary>
         int lastStepId = 0;
 
         void Awake()
@@ -51,19 +65,12 @@ namespace KucingGame
             _audio = GetComponent<AudioSource>();
         }
 
-        void Update()
+        /// <summary>
+        /// Menjalankan karakter sesuai dengan arah.
+        /// </summary>
+        /// <param name="direction">Arah pergerakan horizontal</param>
+        public void Move(float direction)
         {
-            float direction = 0;
-            if (Input.GetKey(KeyCode.A))
-            {
-                direction -= 1f;
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                direction += 1f;
-            }
-            // Memastikan nilai direction di rang -1 sampai 1
-            direction = Mathf.Clamp(direction, -1f, 1f);
             // Menentukan arah hadap sprite berdasarkan arah input
             if (direction > 0.01f)
             {
@@ -73,33 +80,25 @@ namespace KucingGame
             {
                 _sprite.flipX = true;
             }
-            // Gerakkan karakter berdasarkan nilai direction
-            Move(direction);
-            _animator.SetFloat("speed", Mathf.Abs(direction));
 
-            // Lompat ketika pencet spasi
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-        }
-
-        /// <summary>
-        /// Menjalankan karakter sesuai dengan arah.
-        /// </summary>
-        /// <param name="direction">Arah pergerakan horizontal</param>
-        void Move(float direction)
-        {
             // Mencegah pergerakan di udara
             if (allowAirMovement == false && !grounded)
                 return;
             // Bergerak dengan merubah velocity rigidbody
             _body.velocity = new Vector2(direction * speed, _body.velocity.y);
 
-            if (grounded && Mathf.Abs(direction) > 0.01f && Time.time - lastStep > stepSpeed)
+            // Untuk animator
+            _animator.SetFloat("speed", Mathf.Abs(direction));
+
+            // Hanya memainkan suara steps ketika karakter berjalan
+            if (grounded && Mathf.Abs(direction) > 0.01f 
+                && Time.time - lastStep > stepSpeed) // Memastikan clip berikutnya tidak terlalu cepat dimainkan
             {
+                // Memainkan clip step
                 _audio.PlayOneShot(stepSound[lastStepId]);
+                // Mencatat waktu terakhir kali step dimainkan
                 lastStep = Time.time;
+                // Menaikkan index array clip step
                 lastStepId++;
                 if (lastStepId >= stepSound.Length) {
                     lastStepId = 0;
@@ -110,13 +109,18 @@ namespace KucingGame
         /// <summary>
         /// Lompat
         /// </summary>
-        void Jump()
+        public void Jump()
         {
             // Mencegah lompat 2 kali ketika di udara
             if (!grounded)
                 return;
             // Melompatkan karakter dengan merubah velocity vertikal rigidbody
             _body.velocity = new Vector2(_body.velocity.x, jump);
+        }
+
+        public bool facingLeft()
+        {
+            return (_sprite.flipX == true);
         }
 
         void OnCollisionEnter2D(Collision2D other)
